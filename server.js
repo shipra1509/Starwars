@@ -16,7 +16,11 @@ MongoClient.connect('mongodb://star-wars-quotes:star-wars-quotes@ds019063.mlab.c
 app.use(bodyParser.urlencoded({extended: true}))
 
 app.get('/', (req, res) => {
-	var cursor = db.collection('quotes').find()
+  db.collection('quotes').find().toArray((err, result) => {
+    if (err) return console.log(err)
+    // renders index.ejs
+    res.render('index.ejs', {quotes: result})
+  })
 })
 
 app.post('/quotes', (req, res) => {
